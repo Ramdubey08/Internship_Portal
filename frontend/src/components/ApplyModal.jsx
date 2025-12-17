@@ -34,27 +34,25 @@ const ApplyModal = ({ internshipId, onClose, onSuccess }) => {
         formData.append('cv_copy', cvFile);
       }
 
-      // Submit application
-      const response = await applicationAPI.create({
-        internship_id: internshipId,
-        cover_letter: coverLetter,
-        cv_copy: cvFile
-      });
+      // Submit application with FormData
+      const response = await applicationAPI.create(formData);
 
-      if (response.success) {
-        // Show success toast
-        setShowSuccess(true);
-        
-        // Wait 2 seconds then close and refresh
-        setTimeout(() => {
-          setShowSuccess(false);
-          onSuccess();
-        }, 2000);
-      } else {
-        setError(response.error);
-      }
+      // Show success toast
+      setShowSuccess(true);
+      
+      // Wait 2 seconds then close and refresh
+      setTimeout(() => {
+        setShowSuccess(false);
+        onSuccess();
+      }, 2000);
     } catch (err) {
-      setError(err.response?.data?.detail || err.response?.data?.non_field_errors?.[0] || 'Failed to submit application');
+      console.error('Application error:', err);
+      const errorMessage = err.response?.data?.detail 
+        || err.response?.data?.non_field_errors?.[0]
+        || err.response?.data?.error
+        || Object.values(err.response?.data || {})[0]
+        || 'Failed to submit application';
+      setError(errorMessage);
     }
 
     setLoading(false);

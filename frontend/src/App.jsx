@@ -19,6 +19,7 @@ import EditInternship from './pages/EditInternship';
 import ProfileEdit from './pages/Profile';
 import MyApplications from './pages/MyApplications';
 import ApplicantDetail from './pages/ApplicantDetail';
+import ApplicationDetail from './pages/ApplicationDetail';
 import Messages from './pages/Messages';
 import Notifications from './pages/Notifications';
 import About from './pages/About';
@@ -140,7 +141,9 @@ function App() {
                 path="/applications/:id"
                 element={
                   <PrivateRoute>
-                    <ApplicantDetail />
+                    <RoleRoute allowedRoles={['company']}>
+                      <ApplicationDetail />
+                    </RoleRoute>
                   </PrivateRoute>
                 }
               />

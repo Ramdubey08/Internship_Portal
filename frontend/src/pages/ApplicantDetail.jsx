@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { applicationAPI, internshipAPI } from '../services/api';
-import { useAuth } from '../context/AuthContext';
 
 const ApplicantDetail = () => {
   const { id } = useParams();
-  const { isCompany } = useAuth();
   const [applicants, setApplicants] = useState([]);
   const [internship, setInternship] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,19 +19,16 @@ const ApplicantDetail = () => {
     setLoading(true);
     setError('');
     try {
-      if (isCompany) {
-        const [internResponse, appsResponse] = await Promise.all([
-          internshipAPI.getById(id),
-          applicationAPI.getAll()
-        ]);
-        setInternship(internResponse.data);
-        const filtered = (appsResponse.data.results || appsResponse.data).filter(
-          app => app.internship?.id === parseInt(id)
-        );
-        setApplicants(filtered);
-      }
+      // Fetch internship details and its applications
+      const [internResponse, appsResponse] = await Promise.all([
+        internshipAPI.getById(id),
+        applicationAPI.internshipApplications(id)
+      ]);
+      setInternship(internResponse.data);
+      setApplicants(appsResponse.data.results || appsResponse.data);
     } catch (err) {
-      setError('Failed to fetch applicants');
+      console.error('Error fetching applicants:', err);
+      setError(err.response?.data?.detail || 'Failed to fetch applicants');
     }
     setLoading(false);
   };

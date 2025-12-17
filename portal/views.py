@@ -42,6 +42,22 @@ class InternshipViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Internship.objects.filter(is_active=True)
         
+        # For retrieve action (getting single internship), allow company to see their own even if not active
+        if self.action == 'retrieve':
+            if self.request.user.is_authenticated and hasattr(self.request.user, 'profile'):
+                if self.request.user.profile.role == 'company':
+                    # Company can see all their internships
+                    queryset = Internship.objects.filter(poster=self.request.user.profile)
+                    return queryset
+        
+        # For list action, company should only see their own internships
+        if self.action == 'list':
+            if self.request.user.is_authenticated and hasattr(self.request.user, 'profile'):
+                if self.request.user.profile.role == 'company':
+                    # Company can only see their own internships
+                    queryset = Internship.objects.filter(poster=self.request.user.profile)
+                    # Continue with search filters below
+        
         # Filter by company's own internships
         if self.request.query_params.get('my_internships'):
             if self.request.user.is_authenticated and hasattr(self.request.user, 'profile'):
@@ -134,6 +150,11 @@ class ApplicationViewSet(viewsets.ModelViewSet):
         ).exists():
             from rest_framework.exceptions import ValidationError
             raise ValidationError({'detail': 'You have already applied to this internship'})
+        
+        # Check if internship is still active
+        if not internship.is_active:
+            from rest_framework.exceptions import ValidationError
+            raise ValidationError({'detail': 'This internship is no longer accepting applications'})
         
         serializer.save(student=self.request.user.profile)
     
