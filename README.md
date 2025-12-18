@@ -1,33 +1,56 @@
-# 🎓 Internship Portal
+# 🎓 InternHub - Complete Internship Management Portal
 
-A full-stack web application for managing internship postings and applications. Companies can post internships, and students can browse and apply to them.
+A modern, full-stack web application for managing internship postings and applications. Built with Django REST Framework and React, featuring a beautiful gradient UI with glassmorphism effects.
 
-## 🚀 Features
+## ✨ Features
 
-### For Students
-- Browse and search internships by keywords, location, skills
-- Filter by remote/on-site positions
-- Apply to internships with cover letter and resume
-- Track application status (pending, reviewing, shortlisted, accepted, rejected)
-- View personalized dashboard with application statistics
-- Update profile with bio, skills, and CV
+### For Students 🎒
+- **Browse & Search** - View all active internships with advanced search and filtering
+- **Smart Apply** - Apply to internships with cover letter and resume upload
+- **Duplicate Prevention** - Cannot apply twice to the same internship
+- **Application Tracking** - View all applications with status-based filtering (pending, reviewing, shortlisted, accepted, rejected)
+- **Enhanced Profile** - Complete profile with:
+  - Personal information (phone, full name)
+  - Education details (college, degree, graduation year)
+  - Skills showcase with colorful badges
+  - Social links (GitHub, LinkedIn, Portfolio)
+  - Resume/CV upload
+- **Dashboard** - Personalized view with application statistics and status breakdown
+- **Already Applied Badge** - Visual indicator on internships already applied to
 
-### For Companies
-- Post and manage internship listings
-- View all applicants for posted internships
-- Update application statuses
-- Track internship analytics (applications count, active/inactive)
-- Manage company profile with logo and description
+### For Companies 🏢
+- **Post Internships** - Create and manage internship listings with detailed descriptions
+- **My Internships Only** - View only your own posted internships (role-based filtering)
+- **Applicant Management** - View all applicants for each internship with:
+  - Status-based filtering
+  - Bulk status updates
+  - Individual application review
+- **Complete Student Profiles** - View detailed student information including:
+  - Education background
+  - Skills and bio
+  - Social profiles (GitHub, LinkedIn, Portfolio)
+  - Both application resume and profile resume
+- **Application Review** - Dedicated page for reviewing individual applications with:
+  - Collapsible full student profile view
+  - Status update buttons (Reviewing, Shortlist, Accept, Reject)
+  - Cover letter display
+  - Resume download functionality
+- **Dashboard** - Statistics overview with total internships, active count, applications received, pending reviews
 
-### Technical Features
-- **JWT Authentication** with access/refresh tokens and auto-refresh
-- **Role-based access control** (Student/Company permissions)
-- **File upload validation** (CV: PDF/DOC/DOCX max 5MB, Logo: JPG/PNG max 2MB)
-- **RESTful API** with DRF ViewSets and serializers
-- **Responsive UI** with custom CSS (mobile-first design)
-- **Real-time search** and filtering
+### Technical Features ⚙️
+- **JWT Authentication** with access/refresh tokens and auto-refresh mechanism
+- **Role-based access control** with Student/Company permissions
+- **File upload validation** - CV/Resume (PDF/DOC/DOCX max 5MB), Logo (JPG/PNG max 2MB)
+- **Smart Resume Download** - Fetch API with blob download (no new tab opening)
+- **RESTful API** with DRF ViewSets and nested serializers
+- **Modern UI Design** with:
+  - Purple-pink gradient theme (#6366f1 → #8b5cf6 → #d946ef)
+  - Glassmorphism effects with backdrop-filter
+  - Smooth animations (fadeIn, slideInRight, float)
+  - Responsive design (mobile-first approach)
+- **Real-time search** and filtering across internships
 - **Automated profile creation** via Django signals
-- **Comprehensive test suite** (18 tests covering models and APIs)
+- **Production-ready** with Waitress WSGI server and WhiteNoise static files
 
 ---
 
@@ -37,7 +60,9 @@ A full-stack web application for managing internship postings and applications. 
 - **Django 5.2.9** - Web framework
 - **Django REST Framework 3.16.1** - API toolkit
 - **SimpleJWT 5.5.1** - JWT authentication
-- **SQLite3** - Database (development)
+- **Waitress 3.0.2** - Production WSGI server (Windows compatible)
+- **WhiteNoise 6.7.0** - Static file serving
+- **SQLite3** - Database
 - **Pillow 12.0.0** - Image processing
 - **django-cors-headers 4.9.0** - CORS handling
 
@@ -47,80 +72,87 @@ A full-stack web application for managing internship postings and applications. 
 - **Axios 1.6.2** - HTTP client with interceptors
 - **react-hook-form 7.48.0** - Form validation
 - **jwt-decode 4.0.0** - Token parsing
+- **Custom CSS** - Modern gradient design system
 
 ---
 
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
-- Python 3.12+
+- Python 3.8+ (Tested on Python 3.12)
 - Node.js 16+ and npm
-- Git
+- Git (optional)
 
-### 1. Clone Repository
+### Quick Start (Production Mode)
+
+1. **Extract/Clone the Project**
 ```bash
-git clone <repository-url>
 cd InternShip_Portal
 ```
 
-### 2. Backend Setup
-
+2. **Backend Setup**
 ```bash
 # Create virtual environment
 python -m venv venv
 
-# Activate virtual environment
-# Windows:
+# Activate virtual environment (Windows)
 venv\Scripts\activate
-# Mac/Linux:
-source venv/bin/activate
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
-# Run migrations
-python manage.py makemigrations
+# Run database migrations
 python manage.py migrate
 
-# Create superuser (admin)
+# (Optional) Create superuser
 python manage.py createsuperuser
-# Or use the seeded admin: username=admin, password=admin123
+```
 
-# Seed database with sample data
-python manage.py seed_portal
+3. **Build Frontend**
+```bash
+cd frontend
+npm install
+npm run build
+cd ..
+```
 
-# Start Django server
+4. **Start Production Server**
+```bash
+python run_production.py
+```
+
+Server will start at: **http://localhost:8000/**
+
+### Development Mode
+
+**Backend (Terminal 1):**
+```bash
+# Activate venv
+venv\Scripts\activate
+
+# Start Django dev server
 python manage.py runserver
 ```
+Backend: **http://127.0.0.1:8000/**
 
-Backend will run at: **http://127.0.0.1:8000/**
-
-### 3. Frontend Setup
-
+**Frontend (Terminal 2):**
 ```bash
-# Navigate to frontend directory
 cd frontend
-
-# Install dependencies
-npm install
-
-# Start React development server
 npm start
 ```
-
-Frontend will run at: **http://localhost:3000/**
+Frontend: **http://localhost:3000/**
 
 ---
 
-## 🔑 Login Credentials (Seeded Data)
+## 🎯 Default Access Credentials
 
 | Role | Username | Password | Description |
 |------|----------|----------|-------------|
-| Admin | `admin` | `admin123` | Django admin access |
-| Company | `techcorp` | `password123` | TechCorp Solutions |
-| Student | `john_doe` | `password123` | CS student with 3 applications |
-| Student | `jane_smith` | `password123` | Full-stack developer |
-| Student | `alex_kumar` | `password123` | Data Science enthusiast |
+| Admin | `admin` | `admin123` | Django admin panel access |
+| Company | `techcorp` | `password123` | TechCorp - 6 internships posted |
+| Student | `john_doe` | `password123` | Student with sample applications |
+| Student | `jane_smith` | `password123` | Student account |
+| Student | `alex_kumar` | `password123` | Student account |
 
 ---
 
@@ -180,128 +212,183 @@ See `API_TEST_COMMANDS.md` for complete cURL examples:
 ```
 InternShip_Portal/
 ├── intern_portal/              # Django project settings
-│   ├── settings.py            # Configuration
+│   ├── settings.py            # Configuration (DEBUG, CORS, JWT, Media)
 │   ├── urls.py                # Root URL routing
-│   └── wsgi.py                # WSGI config
+│   ├── wsgi.py                # WSGI config
+│   └── asgi.py                # ASGI config
 ├── portal/                     # Main Django app
-│   ├── models.py              # Profile, Internship, Application
-│   ├── serializers.py         # DRF serializers
-│   ├── views.py               # API ViewSets
-│   ├── permissions.py         # Custom permissions
-│   ├── admin.py               # Django admin config
-│   ├── signals.py             # Auto-create Profile
-│   ├── utils.py               # File validators
-│   ├── tests.py               # Unit tests
+│   ├── models.py              # Profile, Internship, Application models
+│   │                          # Profile: role, bio, skills, cv, phone, college, 
+│   │                          #          degree, graduation_year, github, linkedin, portfolio
+│   │                          # Internship: title, description, skills_required, stipend,
+│   │                          #             duration, location, remote, last_date
+│   │                          # Application: student, internship, cover_letter, cv_copy, status
+│   ├── serializers.py         # DRF serializers with nested relations
+│   ├── views.py               # API ViewSets with role-based filtering
+│   ├── permissions.py         # IsStudent, IsCompany custom permissions
+│   ├── admin.py               # Django admin configuration
+│   ├── signals.py             # Auto-create Profile on User creation
+│   ├── utils.py               # File validators (CV: 5MB, Logo: 2MB)
 │   ├── urls.py                # API routing
-│   └── management/
-│       └── commands/
-│           └── seed_portal.py # Database seeding
+│   └── migrations/            # Database migrations
 ├── frontend/                   # React application
 │   ├── public/
 │   ├── src/
 │   │   ├── components/        # Reusable components
-│   │   │   ├── Navbar.jsx
+│   │   │   ├── Navbar.jsx     # Animated logo, role badges, logout
 │   │   │   ├── Footer.jsx
-│   │   │   ├── InternshipCard.jsx
-│   │   │   ├── Pagination.jsx
-│   │   │   ├── FilterBar.jsx
-│   │   │   ├── ApplyModal.jsx
-│   │   │   └── PrivateRoute.jsx
+│   │   │   ├── ApplyModal.jsx # Application form with file upload
+│   │   │   └── PrivateRoute.jsx # Protected routes
 │   │   ├── pages/             # Page components
-│   │   │   ├── Home.jsx (Landing)
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Search.jsx
-│   │   │   ├── InternshipDetail.jsx
-│   │   │   ├── StudentDashboard.jsx
-│   │   │   ├── CompanyDashboard.jsx
-│   │   │   ├── CreateInternship.jsx
-│   │   │   ├── EditInternship.jsx
-│   │   │   ├── Profile.jsx
-│   │   │   └── MyApplications.jsx
+│   │   │   ├── Home.jsx       # Landing page with hero section
+│   │   │   ├── Login.jsx      # Split-screen gradient design
+│   │   │   ├── Register.jsx   # Role selection with cards
+│   │   │   ├── InternshipList.jsx # Browse all internships
+│   │   │   ├── InternshipDetail.jsx # Detailed view with apply button
+│   │   │   ├── Dashboard.jsx  # Role-based dashboard routing
+│   │   │   ├── CompanyDashboard.jsx # Company stats and internships
+│   │   │   ├── CreateInternship.jsx # Post new internship
+│   │   │   ├── ApplicantDetail.jsx # View all applicants for internship
+│   │   │   ├── ApplicationDetail.jsx # Review individual application
+│   │   │   │                  # with collapsible student profile view
+│   │   │   ├── MyApplications.jsx # Student's applications with filtering
+│   │   │   ├── Profile.jsx    # Enhanced profile with education & social links
+│   │   │   ├── About.jsx
+│   │   │   ├── Contact.jsx
+│   │   │   └── FAQ.jsx
 │   │   ├── services/          # API services
-│   │   │   ├── api.js         # Axios instance + interceptors
-│   │   │   ├── internships.js # Internship operations
-│   │   │   └── applications.js# Application operations
+│   │   │   └── api.js         # Axios instance + JWT interceptors
 │   │   ├── context/
 │   │   │   └── AuthContext.jsx# Auth state management
-│   │   ├── styles.css         # Global styles
-│   │   ├── App.jsx            # Root component + routing
+│   │   ├── styles.css         # Global styles (1500+ lines)
+│   │   │                      # - Gradient design system
+│   │   │                      # - Navbar with animations
+│   │   │                      # - Auth page styling
+│   │   │                      # - Responsive breakpoints
+│   │   ├── App.jsx            # Root component with routing
 │   │   └── index.js           # Entry point
+│   ├── build/                 # Production build (created by npm run build)
 │   ├── package.json
 │   └── package-lock.json
+├── media/                      # Uploaded files
+│   ├── cvs/                   # Student resumes
+│   ├── application_cvs/       # Application-specific CVs
+│   └── logos/                 # Company logos
 ├── requirements.txt            # Python dependencies
-├── manage.py                   # Django CLI
-├── db.sqlite3                  # Database
-├── README.md                   # This file
-├── API_TEST_COMMANDS.md        # cURL examples
-└── STUDENT_APPLICATION_FLOW.md # Flow documentation
+├── manage.py                   # Django management CLI
+├── run_production.py           # Production server script (Waitress)
+├── db.sqlite3                  # SQLite database
+└── README.md                   # This file
 ```
 
 ---
 
-## 🔄 Application Flow Example
+## 🔄 Key Workflows
 
-### Student Applies to Internship
+### 1. Student Application Flow
 
-1. **Student clicks "Apply Now"** on internship detail page
-2. **Modal opens** with cover letter textarea and file upload
-3. **Student fills form** and clicks "Submit Application"
-4. **POST request** to `/api/applications/` with:
-   ```json
-   {
-     "internship_id": 5,
-     "cover_letter": "I am interested...",
-     "cv_copy": File
-   }
-   ```
-5. **Backend validates:**
-   - User is a student
-   - No duplicate application exists
-   - File size/type is valid
-6. **Creates application** with status="pending"
-7. **Returns success** response with application data
-8. **Success toast** appears (animated slide-in)
-9. **UI updates automatically:**
-   - "Apply Now" button changes to "Already Applied" badge
-   - Application count increments
-   - Modal closes after 2 seconds
-10. **Student can view** in My Applications page
+1. **Browse Internships** → Student views all active internships
+2. **View Details** → Click internship card to see full description
+3. **Apply** → Click "Apply Now" button (if not already applied)
+4. **Fill Form** → Cover letter + Resume upload in modal
+5. **Submit** → FormData POST to backend
+6. **Validation** → Backend checks duplicates, file size, internship status
+7. **Success** → Button changes to "✅ Already Applied"
+8. **Track** → View in My Applications with status filtering
 
-See `STUDENT_APPLICATION_FLOW.md` for complete sequence diagram.
+### 2. Company Review Flow
+
+1. **Dashboard** → View statistics (total internships, applications, pending)
+2. **My Internships** → See all posted internships with applicant counts
+3. **View Applicants** → Click "Applicants (X)" button
+4. **Filter by Status** → Pending, Reviewing, Shortlisted, Accepted, Rejected
+5. **Review Application** → Click "Review" button on any applicant
+6. **View Full Profile** → Click "View Full Profile" to expand student details
+   - Education (college, degree, year)
+   - Bio and skills with badges
+   - Social links (GitHub, LinkedIn, Portfolio)
+   - Profile resume download
+7. **Update Status** → Click status buttons (Reviewing/Shortlist/Accept/Reject)
+8. **Download Resume** → Fetch API with blob download
+
+### 3. Authentication & Token Refresh
+
+1. **Login** → POST credentials to `/api/token/`
+2. **Store Tokens** → Save access + refresh tokens in localStorage
+3. **Auto Attach** → Axios interceptor adds `Authorization: Bearer <token>`
+4. **Token Expiry** → 401 response triggers refresh
+5. **Refresh Token** → POST refresh token to `/api/token/refresh/`
+6. **Retry Request** → Original request retried with new access token
+7. **Logout** → Clear tokens and redirect to login
 
 ---
 
 ## 🌐 API Endpoints
 
 ### Authentication
-- `POST /api/token/` - Login (get access/refresh tokens)
+- `POST /api/register/` - Register new user (username, email, password, role)
+- `POST /api/token/` - Login (returns access + refresh tokens)
 - `POST /api/token/refresh/` - Refresh access token
 
 ### Profile
-- `GET /api/profile/` - Get current user profile
-- `PATCH /api/profile/` - Update profile
+- `GET /api/profile/` - Get current user profile with all fields
+- `PATCH /api/profile/` - Update profile (bio, skills, phone, college, degree, 
+                          graduation_year, github, linkedin, portfolio, cv)
 
 ### Internships
-- `GET /api/internships/` - List internships (with filters)
+- `GET /api/internships/` - List all active internships
+  - Students: See all active internships
+  - Companies: See only their own internships
 - `POST /api/internships/` - Create internship (Company only)
-- `GET /api/internships/:id/` - Get internship details
+- `GET /api/internships/:id/` - Get internship details with `has_applied` flag
 - `PUT /api/internships/:id/` - Update internship (Company only)
 - `DELETE /api/internships/:id/` - Delete internship (Company only)
 
 **Query Parameters:**
-- `?q=keyword` - Search in title/description
+- `?q=keyword` - Search in title/description/skills
 - `?location=Mumbai` - Filter by location
-- `?skills=Python` - Filter by required skills
-- `?remote=true` - Filter remote internships
-- `?my_internships=true` - Company's posted internships
+- `?remote=true` - Filter remote internships only
 
 ### Applications
-- `GET /api/applications/` - List applications
+- `GET /api/applications/` - List all applications
 - `POST /api/applications/` - Apply to internship (Student only)
-- `GET /api/applications/my_applications/` - Student's applications
-- `GET /api/applications/:id/internship_applications/` - Applicants for internship (Company)
-- `PATCH /api/applications/:id/` - Update application status (Company)
+  - Validates: no duplicates, internship is active, file size
+- `GET /api/applications/my_applications/` - Current student's applications
+- `GET /api/applications/:id/internship_applications/` - All applicants for internship (Company)
+- `PATCH /api/applications/:id/` - Update application status (Company only)
+  - Allowed statuses: pending, reviewing, shortlisted, accepted, rejected
+
+---
+
+## 🎨 UI Features & Design
+
+### Design System
+- **Color Palette:**
+  - Primary gradient: `#6366f1 → #8b5cf6 → #d946ef` (Purple to Pink)
+  - Success: `#27ae60` (Green)
+  - Error: `#e74c3c` (Red)
+  - Info: `#3498db` (Blue)
+  - Warning: `#f39c12` (Orange)
+
+### Animations
+- **fadeIn** - Smooth element entrance
+- **slideInRight** - Cards sliding from right
+- **float** - Continuous floating effect (logo rocket)
+- **spin** - Loading spinner rotation
+- **Hover effects** - Scale transform on buttons and cards
+
+### Components
+- **Navbar** - Glassmorphism with backdrop-filter, animated logo, role badges
+- **Auth Pages** - Split-screen layout with gradient backgrounds
+- **Cards** - Shadow depth with hover elevation
+- **Badges** - Gradient skill badges with white text
+- **Buttons** - Smooth transitions with color-coded actions
+- **Modals** - Centered overlay with backdrop blur
+
+### Responsive Design
+- **Desktop:** Full 2-column layouts, side-by-side cards
+- **Tablet (< 968px):** Reduced spacing, flex-wrap layouts
+- **Mobile (< 640px):** Single column, full-width buttons, stacked forms
 
 ---
 
@@ -460,56 +547,77 @@ This project is open source and available under the MIT License.
 ### Database Schema
 
 **Profile** (One-to-One with User)
-- role: student/company
-- bio, skills, cv, company_name, logo
-
-**Internship** (ForeignKey to Profile where role=company)
-- title, description, skills_required
-- stipend, duration, location, remote
-- last_date, is_active, created_at
-
-**Application** (ForeignKey to Internship + Student Profile)
-- cover_letter, cv_copy
-- status: pending/reviewing/shortlisted/accepted/rejected
-- applied_at
-- Unique constraint: (internship, student)
-
 ---
 
 ## 🎯 Future Enhancements
 
 - [ ] Email notifications for application status changes
-- [ ] Real-time chat between students and companies
-- [ ] Payment integration for premium listings
-- [ ] Advanced analytics dashboard
-- [ ] Application deadline reminders
-- [ ] Resume builder/parser
-- [ ] Company verification system
-- [ ] Bookmark/save internships
-- [ ] Application feedback system
-- [ ] Export applications to PDF
-- [ ] Bulk application status updates
-- [ ] Internship recommendations (ML-based)
+- [ ] Real-time chat between students and companies  
+- [ ] Advanced analytics dashboard with charts
+- [ ] Application deadline reminders via email
+- [ ] Resume parser (auto-fill profile from CV)
+- [ ] Company verification badges
+- [ ] Bookmark/save internships feature
+- [ ] Bulk status updates for applications
+- [ ] Internship recommendations using ML
+- [ ] Export applications/reports to PDF
+- [ ] Video interview scheduling
+- [ ] Skill assessment tests
 
 ---
 
-## 📞 Support
+## 📊 Database Schema
 
-For issues or questions:
-- Create an issue in the repository
-- Check documentation files
-- Review test cases for examples
+**Profile** (OneToOne with User)
+- role: student/company
+- Personal: phone, bio
+- Education: college, degree, graduation_year
+- Skills: skills (comma-separated)
+- Files: cv, logo
+- Social: github, linkedin, portfolio
+- Company: company_name
+
+**Internship** (ForeignKey to Profile where role=company)
+- Details: title, description, skills_required
+- Compensation: stipend, duration
+- Location: location, remote (boolean)
+- Dates: last_date, created_at
+- Status: is_active
+
+**Application** (ForeignKey to Internship + Student Profile)
+- Content: cover_letter, cv_copy
+- Status: pending/reviewing/shortlisted/accepted/rejected
+- Timestamp: applied_at
+- Constraint: Unique (internship, student) - prevents duplicate applications
 
 ---
 
-## ✨ Acknowledgments
+## 📞 Contact & Support
 
-Built with Django REST Framework and React for a modern, scalable internship management system.
-
-**Version:** 1.0.0  
-**Last Updated:** December 2, 2025
+For issues, questions, or contributions:
+- 📧 Email: support@internhub.com
+- 🐛 Bug Reports: Create an issue on GitHub
+- 💡 Feature Requests: Open a discussion
 
 ---
 
-**Happy Coding! 🚀**
-# Internship_Portal
+## ✨ Credits
+
+**Developed by:** Your Name  
+**Built with:** Django REST Framework + React  
+**Design:** Modern gradient UI with glassmorphism  
+**Version:** 2.0.0  
+**Last Updated:** December 18, 2025
+
+Special thanks to:
+- Django & DRF communities
+- React ecosystem
+- All contributors and testers
+
+---
+
+**🚀 InternHub - Connecting Students with Opportunities**
+
+---
+
+Made with ❤️ and lots of ☕

@@ -15,25 +15,38 @@ class ProfileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Profile
-        fields = ['id', 'user', 'role', 'bio', 'skills', 'cv', 'company_name', 'logo']
+        fields = [
+            'id', 'user', 'role', 'bio', 'skills', 'cv', 'company_name', 'logo',
+            'phone', 'college', 'degree', 'graduation_year', 'github', 'linkedin', 'portfolio'
+        ]
         read_only_fields = ['id', 'user', 'role']
 
 
 class InternshipSerializer(serializers.ModelSerializer):
     poster = ProfileSerializer(read_only=True)
     applications_count = serializers.SerializerMethodField()
+    has_applied = serializers.SerializerMethodField()
     
     class Meta:
         model = Internship
         fields = [
             'id', 'poster', 'title', 'description', 'skills_required', 
             'stipend', 'duration', 'location', 'remote', 'last_date', 
-            'is_active', 'created_at', 'applications_count'
+            'is_active', 'created_at', 'applications_count', 'has_applied'
         ]
         read_only_fields = ['id', 'poster', 'created_at']
     
     def get_applications_count(self, obj):
         return obj.applications.count()
+    
+    def get_has_applied(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated and hasattr(request.user, 'profile'):
+            return Application.objects.filter(
+                internship=obj,
+                student=request.user.profile
+            ).exists()
+        return False
 
 
 class ApplicationSerializer(serializers.ModelSerializer):

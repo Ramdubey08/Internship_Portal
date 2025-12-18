@@ -8,6 +8,7 @@ const ApplicationDetail = () => {
   const [application, setApplication] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showFullProfile, setShowFullProfile] = useState(false);
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
@@ -94,15 +95,209 @@ const ApplicationDetail = () => {
         <div>
           {/* Student Information */}
           <div className="card">
-            <h2>Student Information</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2>Student Information</h2>
+              <button 
+                onClick={() => setShowFullProfile(!showFullProfile)}
+                className="btn btn-primary"
+                style={{ fontSize: '0.9rem', padding: '0.5rem 1rem' }}
+              >
+                {showFullProfile ? '📋 Hide Full Profile' : '👤 View Full Profile'}
+              </button>
+            </div>
             <div className="mt-2">
               <p><strong>Username:</strong> {application.student?.user?.username}</p>
               <p><strong>Email:</strong> {application.student?.user?.email}</p>
               {application.student?.user?.first_name && (
                 <p><strong>Name:</strong> {application.student?.user?.first_name} {application.student?.user?.last_name}</p>
               )}
+              {application.student?.phone && (
+                <p><strong>Phone:</strong> {application.student?.phone}</p>
+              )}
             </div>
           </div>
+
+          {/* Complete Student Profile - Collapsible */}
+          {showFullProfile && (
+            <div className="card mt-2" style={{ 
+              border: '2px solid #667eea',
+              animation: 'fadeIn 0.3s ease-in'
+            }}>
+              <h2 style={{ color: '#667eea' }}>📚 Complete Student Profile</h2>
+              
+              {/* Education */}
+              <div className="mt-2" style={{ background: '#f8f9fa', padding: '1rem', borderRadius: '8px' }}>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#3498db' }}>🎓 Education</h3>
+                {application.student?.college || application.student?.degree || application.student?.graduation_year ? (
+                  <>
+                    {application.student?.college && (
+                      <p><strong>College:</strong> {application.student.college}</p>
+                    )}
+                    {application.student?.degree && (
+                      <p><strong>Degree:</strong> {application.student.degree}</p>
+                    )}
+                    {application.student?.graduation_year && (
+                      <p><strong>Graduation Year:</strong> {application.student.graduation_year}</p>
+                    )}
+                  </>
+                ) : (
+                  <p style={{ color: '#999', fontStyle: 'italic' }}>No education information provided</p>
+                )}
+              </div>
+
+              {/* Bio */}
+              <div className="mt-2" style={{ background: '#f8f9fa', padding: '1rem', borderRadius: '8px' }}>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#3498db' }}>📝 About</h3>
+                {application.student?.bio ? (
+                  <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>{application.student.bio}</p>
+                ) : (
+                  <p style={{ color: '#999', fontStyle: 'italic' }}>No bio provided</p>
+                )}
+              </div>
+
+              {/* Skills */}
+              <div className="mt-2" style={{ background: '#f8f9fa', padding: '1rem', borderRadius: '8px' }}>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#3498db' }}>💡 Skills</h3>
+                {application.student?.skills ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    {application.student.skills.split(',').map((skill, index) => (
+                      <span key={index} style={{ 
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        color: 'white',
+                        padding: '0.4rem 0.9rem', 
+                        borderRadius: '20px', 
+                        fontSize: '0.85rem',
+                        fontWeight: '500'
+                      }}>
+                        {skill.trim()}
+                      </span>
+                    ))}
+                  </div>
+                ) : (
+                  <p style={{ color: '#999', fontStyle: 'italic' }}>No skills listed</p>
+                )}
+              </div>
+
+              {/* Online Presence */}
+              <div className="mt-2" style={{ background: '#f8f9fa', padding: '1rem', borderRadius: '8px' }}>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#3498db' }}>🔗 Online Presence</h3>
+                {application.student?.github || application.student?.linkedin || application.student?.portfolio ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+                    {application.student?.github && (
+                      <a 
+                        href={application.student.github} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{
+                          background: '#333',
+                          color: 'white',
+                          padding: '0.6rem 1.2rem',
+                          borderRadius: '6px',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          fontSize: '0.9rem',
+                          fontWeight: '500',
+                          transition: 'transform 0.2s'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                      >
+                        <span>🐙</span> GitHub
+                      </a>
+                    )}
+                    {application.student?.linkedin && (
+                      <a 
+                        href={application.student.linkedin} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{
+                          background: '#0077b5',
+                          color: 'white',
+                          padding: '0.6rem 1.2rem',
+                          borderRadius: '6px',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          fontSize: '0.9rem',
+                          fontWeight: '500',
+                          transition: 'transform 0.2s'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                      >
+                        <span>💼</span> LinkedIn
+                      </a>
+                    )}
+                    {application.student?.portfolio && (
+                      <a 
+                        href={application.student.portfolio} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        style={{
+                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          color: 'white',
+                          padding: '0.6rem 1.2rem',
+                          borderRadius: '6px',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          fontSize: '0.9rem',
+                          fontWeight: '500',
+                          transition: 'transform 0.2s'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                      >
+                        <span>🌐</span> Portfolio
+                      </a>
+                    )}
+                  </div>
+                ) : (
+                  <p style={{ color: '#999', fontStyle: 'italic' }}>No online profiles linked</p>
+                )}
+              </div>
+
+              {/* Student Resume */}
+              <div className="mt-2" style={{ background: '#f8f9fa', padding: '1rem', borderRadius: '8px' }}>
+                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: '#3498db' }}>📄 Profile Resume</h3>
+                {application.student?.cv ? (
+                  <button 
+                    onClick={async () => {
+                      try {
+                        const url = application.student.cv.startsWith('http') 
+                          ? application.student.cv 
+                          : `http://localhost:8000${application.student.cv}`;
+                        
+                        const response = await fetch(url);
+                        const blob = await response.blob();
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = application.student.cv.split('/').pop();
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(blobUrl);
+                      } catch (error) {
+                        alert('Failed to download resume');
+                      }
+                    }}
+                    className="btn btn-info"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+                  >
+                    📥 Download Profile Resume
+                  </button>
+                ) : (
+                  <p style={{ color: '#999', fontStyle: 'italic' }}>No profile resume uploaded</p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Internship Information */}
           <div className="card mt-2">

@@ -17,6 +17,15 @@ class Profile(models.Model):
     company_name = models.CharField(max_length=255, blank=True, null=True)
     logo = models.ImageField(upload_to='logos/', blank=True, null=True, validators=[validate_image_file])
     
+    # Student-specific fields
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    college = models.CharField(max_length=255, blank=True, null=True)
+    degree = models.CharField(max_length=100, blank=True, null=True)
+    graduation_year = models.IntegerField(blank=True, null=True)
+    github = models.URLField(blank=True, null=True)
+    linkedin = models.URLField(blank=True, null=True)
+    portfolio = models.URLField(blank=True, null=True)
+    
     def __str__(self):
         return f"{self.user.username} - {self.get_role_display()}"
     

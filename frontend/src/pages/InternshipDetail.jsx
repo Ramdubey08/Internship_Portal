@@ -12,6 +12,7 @@ const InternshipDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [hasApplied, setHasApplied] = useState(false);
 
   useEffect(() => {
     fetchInternship();
@@ -24,6 +25,7 @@ const InternshipDetail = () => {
     try {
       const response = await internshipAPI.getById(id);
       setInternship(response.data);
+      setHasApplied(response.data.has_applied || false);
     } catch (err) {
       setError('Failed to fetch internship details');
     }
@@ -97,9 +99,15 @@ const InternshipDetail = () => {
 
         {isStudent && internship.is_active && !isExpired && (
           <div className="mt-3">
-            <button onClick={handleApplyClick} className="btn btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
-              Apply Now
-            </button>
+            {hasApplied ? (
+              <div className="alert alert-info" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                ✅ You have already applied to this internship
+              </div>
+            ) : (
+              <button onClick={handleApplyClick} className="btn btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
+                Apply Now
+              </button>
+            )}
           </div>
         )}
 

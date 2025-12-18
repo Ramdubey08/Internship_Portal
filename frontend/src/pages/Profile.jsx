@@ -13,6 +13,13 @@ const ProfileEdit = () => {
       setValue('bio', profile.bio || '');
       setValue('skills', profile.skills || '');
       setValue('company_name', profile.company_name || '');
+      setValue('phone', profile.phone || '');
+      setValue('college', profile.college || '');
+      setValue('degree', profile.degree || '');
+      setValue('graduation_year', profile.graduation_year || '');
+      setValue('github', profile.github || '');
+      setValue('linkedin', profile.linkedin || '');
+      setValue('portfolio', profile.portfolio || '');
     }
   }, [profile, setValue]);
 
@@ -48,11 +55,39 @@ const ProfileEdit = () => {
             <p>{user?.email || profile?.user?.email}</p>
           </div>
           <div style={{ marginTop: '1rem' }}>
+            <p><strong>Full Name:</strong></p>
+            <p>{user?.first_name && user?.last_name ? `${user.first_name} ${user.last_name}` : 'Not provided'}</p>
+          </div>
+          <div style={{ marginTop: '1rem' }}>
             <p><strong>Account Type:</strong></p>
             <p style={{ textTransform: 'capitalize', color: '#3498db', fontWeight: 'bold' }}>
               {profile?.role}
             </p>
           </div>
+          {profile?.role === 'student' && profile?.phone && (
+            <div style={{ marginTop: '1rem' }}>
+              <p><strong>Phone:</strong></p>
+              <p>{profile.phone}</p>
+            </div>
+          )}
+          {profile?.role === 'student' && profile?.college && (
+            <div style={{ marginTop: '1rem' }}>
+              <p><strong>College:</strong></p>
+              <p>{profile.college}</p>
+            </div>
+          )}
+          {profile?.role === 'student' && profile?.degree && (
+            <div style={{ marginTop: '1rem' }}>
+              <p><strong>Degree:</strong></p>
+              <p>{profile.degree}</p>
+            </div>
+          )}
+          {profile?.role === 'student' && profile?.graduation_year && (
+            <div style={{ marginTop: '1rem' }}>
+              <p><strong>Graduation Year:</strong></p>
+              <p>{profile.graduation_year}</p>
+            </div>
+          )}
           <div style={{ marginTop: '1rem' }}>
             <p><strong>Member Since:</strong></p>
             <p>{new Date(user?.date_joined || Date.now()).toLocaleDateString()}</p>
@@ -89,6 +124,79 @@ const ProfileEdit = () => {
                 placeholder={profile?.role === 'student' ? 'Tell us about yourself, your interests, and career goals...' : 'Describe your company, culture, and what makes it a great place to intern...'}
               />
             </div>
+
+            {profile?.role === 'student' && (
+              <>
+                <div className="form-group">
+                  <label>Phone Number</label>
+                  <input
+                    type="tel"
+                    {...register('phone', { pattern: { value: /^[0-9]{10,15}$/, message: 'Enter valid phone number' } })}
+                    placeholder="+91 9876543210"
+                  />
+                  {errors.phone && <span style={{ color: 'red', fontSize: '0.875rem' }}>{errors.phone.message}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label>College/University</label>
+                  <input
+                    type="text"
+                    {...register('college')}
+                    placeholder="e.g., IIT Delhi, Mumbai University"
+                  />
+                </div>
+
+                <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
+                  <div className="form-group">
+                    <label>Degree/Course</label>
+                    <input
+                      type="text"
+                      {...register('degree')}
+                      placeholder="e.g., B.Tech Computer Science, BBA"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Graduation Year</label>
+                    <input
+                      type="number"
+                      {...register('graduation_year', { min: 2020, max: 2030 })}
+                      placeholder="2025"
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>GitHub Profile</label>
+                  <input
+                    type="url"
+                    {...register('github', { pattern: { value: /^https?:\/\/.+/, message: 'Enter valid URL' } })}
+                    placeholder="https://github.com/yourusername"
+                  />
+                  {errors.github && <span style={{ color: 'red', fontSize: '0.875rem' }}>{errors.github.message}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label>LinkedIn Profile</label>
+                  <input
+                    type="url"
+                    {...register('linkedin', { pattern: { value: /^https?:\/\/.+/, message: 'Enter valid URL' } })}
+                    placeholder="https://linkedin.com/in/yourusername"
+                  />
+                  {errors.linkedin && <span style={{ color: 'red', fontSize: '0.875rem' }}>{errors.linkedin.message}</span>}
+                </div>
+
+                <div className="form-group">
+                  <label>Portfolio Website</label>
+                  <input
+                    type="url"
+                    {...register('portfolio', { pattern: { value: /^https?:\/\/.+/, message: 'Enter valid URL' } })}
+                    placeholder="https://yourportfolio.com"
+                  />
+                  {errors.portfolio && <span style={{ color: 'red', fontSize: '0.875rem' }}>{errors.portfolio.message}</span>}
+                </div>
+              </>
+            )}
 
             <div className="form-group">
               <label>Skills {profile?.role === 'student' && '*'}</label>
@@ -133,6 +241,32 @@ const ProfileEdit = () => {
                 {skill.trim()}
               </span>
             ))}
+          </div>
+        </div>
+      )}
+
+      {profile?.role === 'student' && (profile?.github || profile?.linkedin || profile?.portfolio) && (
+        <div className="card mt-2">
+          <h3>Online Presence</h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1rem' }}>
+            {profile.github && (
+              <a href={profile.github} target="_blank" rel="noopener noreferrer" 
+                className="btn" style={{ background: '#333', color: 'white', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span>🐙</span> GitHub
+              </a>
+            )}
+            {profile.linkedin && (
+              <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" 
+                className="btn" style={{ background: '#0077b5', color: 'white', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span>💼</span> LinkedIn
+              </a>
+            )}
+            {profile.portfolio && (
+              <a href={profile.portfolio} target="_blank" rel="noopener noreferrer" 
+                className="btn" style={{ background: '#8b5cf6', color: 'white', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span>🌐</span> Portfolio
+              </a>
+            )}
           </div>
         </div>
       )}
